@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <title>Dashboard</title>
+
+        <style>
+        /* COLOR VARIABLES */
+        :root {
+            --sidebar-bg: #840CA9;
+            --sidebar-active: #BF66DB;
+            --color-total: #2C5282;
+            --color-present: #38b25d; /* Updated Green */
+            --color-absent: #E53E3E;
+            --color-late: #ECC94B;
+            --bg-light: #f8f9fa;
+            --search-bg: #efefef;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            background-color: var(--bg-light);
+            overflow-x: hidden;
+        }
+
+        /* SIDEBAR STYLES */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            position: sticky;
+            top: 0;
+            color: white;
+            z-index: 1000;
+        }
+
+        .sidebar hr {
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            opacity: 1;
+        }
+
+        .empty-kwan{ margin-top: 60px; }
+
+        .nav-pills .nav-link {
+            color: white;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: var(--sidebar-active);
+        }
+
+        .nav-pills .nav-link:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .logout-link {
+            font-weight: 600;
+            font-size: 1.3rem !important;
+            transition: 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+
+        /* TOP NAV BAR STYLES */
+        .top-nav {
+            height: 80px;
+            background-color: white;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .search-box {
+            background-color: var(--search-bg);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            width: 400px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            margin-left: 10px;
+            width: 100%;
+            color: #6c757d;
+        }
+
+        .profile-border {
+            border: 3px solid var(--sidebar-bg);
+            padding: 2px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .profile-img-top {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-area { padding: 30px; }
+
+        /* --- DASHBOARD CONTENT STYLES --- */
+        .stat-card {
+            border-radius: 15px;
+            border-style: solid;
+            border-width: 2px; /* Explicit border width */
+            background: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+        }
+
+        /* Stat Card Colors using Root Variables */
+        .border-total { border-color: var(--color-total) !important; color: var(--color-total); }
+        .border-present { border-color: var(--color-present) !important; color: var(--color-present); }
+        .border-absent { border-color: var(--color-absent) !important; color: var(--color-absent); }
+        .border-late { border-color: var(--color-late) !important; color: var(--color-late); }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            padding: 25px;
+            height: 100%;
+        }
+
+        .activity-item { display: flex; margin-bottom: 20px; }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-top: 6px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        /* Weekly Progress Bars */
+        .progress-custom {
+            height: 35px;
+            background-color: #eeeeee;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            width: 100%;
+        }
+        
+        .progress-val-green { 
+            background-color: var(--color-present); 
+            width: 80%; 
+            height: 100%; 
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            padding-left: 10px; 
+            font-size: 0.8rem;
+        }
+        
+        .progress-val-red { 
+            background-color: var(--color-absent); 
+            width: 20%; 
+            height: 100%; 
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-end; /* Aligns content to the right */
+            padding-right: 10px; /* Space from the right edge */
+            font-size: 0.8rem;
+        }
+
+    </style>
+    
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="d-flex flex-column flex-shrink-0 p-3 sidebar">
+        <div class="empty-kwan"></div>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item"><a href="Home-Dashboard.html" class="nav-link active"><i class="bi bi-house me-3"></i> Dashboard</a></li>
+            <li class="nav-item"><a href="Home-Attendance-Log.html" class="nav-link"><i class="bi bi-calendar2-check me-3"></i> Attendance Log</a></li>
+            <li class="nav-item"><a href="Home-Student-Masterlist.html" class="nav-link"><i class="bi bi-person-lines-fill me-3"></i> Student Masterlist</a></li>
+            <li class="nav-item"><a href="Home-Industry-Partners.html" class="nav-link"><i class="bi bi-buildings me-3"></i> Industry Partners</a></li>
+            <li class="nav-item"><a href="Home-Report-Generation.html" class="nav-link"><i class="bi bi-file-earmark-bar-graph me-3"></i> Report Generation</a></li>
+            <li class="nav-item"><a href="Home-Profile.html" class="nav-link"><i class="bi bi-person-circle me-3"></i> Profile</a></li>
+        </ul>
+        <hr>
+        
+        <div class="pb-3 d-flex justify-content-center">
+            <a href="#" class="d-flex align-items-center logout-link">
+                <i class="bi bi-box-arrow-left me-2"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Section -->
+    <div class="main-container">
+        
+        <nav class="top-nav">
+            <div class="search-box">
+                <i class="bi bi-search text-secondary"></i>
+                <input type="text" placeholder="Search....">
+            </div>
+
+            <div class="d-flex align-items-center">
+                <span class="fw-bold me-4 text-dark">Monday, March 32, 2062</span>
+                <div class="profile-border">
+                    <img src="/Pictures/images.jpg" alt="profile" class="profile-img-top">
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <h1>Hello John Arckie!</h1>
+            <p class="text-secondary">Immersion Teacher</p>
+
+            <!-- Row 1: Summary Cards -->
+            <div class="row g-4 mt-2">
+                <div class="col-md-3">
+                    <div class="stat-card border-total">
+                        <h5 class="text-dark fw-bold">Total Students</h5>
+                        <div class="stat-number">45</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card border-present">
+                        <h5 class="text-dark fw-bold">Present Today</h5>
+                        <div class="stat-number">40</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card border-absent">
+                        <h5 class="text-dark fw-bold">Absent Today</h5>
+                        <div class="stat-number">5</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card border-late">
+                        <h5 class="text-dark fw-bold">Late Today</h5>
+                        <div class="stat-number">14</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Recent Activity & Stats -->
+            <div class="row g-4 mt-4">
+                <!-- Left: Recent Activity -->
+                <div class="col-md-6">
+                    <div class="dashboard-card">
+                        <h4 class="fw-bold mb-0">Recent Activity</h4>
+                        <p class="text-secondary small">Latest System Events and Updates</p>
+                        
+                        <div class="mt-4">
+                            <div class="activity-item">
+                                <span class="dot" style="background-color: #ECC94B;"></span>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Late Arrival Recorded</h6>
+                                    <small class="text-secondary">John Doe Gidacan - 1 min ago</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <span class="dot" style="background-color: #ECC94B;"></span>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Late Arrival Recorded</h6>
+                                    <small class="text-secondary">Grace Mariblanca - 1 min ago</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <span class="dot" style="background-color: #38B2AC;"></span>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Batch Clock-In Detected</h6>
+                                    <small class="text-secondary">5 Students at Oboob Barangay Hall - 4 mins ago</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <span class="dot" style="background-color: #38B2AC;"></span>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Julius Hamilton Batobalonos Clocked In</h6>
+                                    <small class="text-secondary">PNP Bantayan - 8 mins ago</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <span class="dot" style="background-color: #38B2AC;"></span>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Juan Reyes Clocked In</h6>
+                                    <small class="text-secondary">Attorney's Office - 10 mins ago</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Quick Stat & Overview -->
+                <div class="col-md-6">
+                    <!-- Quick Stat Top -->
+                    <div class="dashboard-card mb-4" style="height: auto;">
+                        <h4 class="fw-bold mb-0">Quick Stat</h4>
+                        <p class="text-secondary small">Today's Summary</p>
+                        
+                        <div class="d-flex justify-content-between mt-3"><span class="text-secondary">Avg Clock-In Time</span><span class="fw-bold">8:15 AM</span></div>
+                        <div class="d-flex justify-content-between mt-2"><span class="text-secondary">Active Sites</span><span class="fw-bold">5/6</span></div>
+                        <div class="d-flex justify-content-between mt-2"><span class="text-secondary">Avg Performance</span><span class="fw-bold">-</span></div>
+                        <div class="d-flex justify-content-between mt-2"><span class="text-secondary">Active Supervisors</span><span class="fw-bold">5</span></div>
+                    </div>
+
+                    <!-- Weekly Attendance Overview -->
+                    <div class="dashboard-card" style="height: auto;">
+                        <h4 class="fw-bold mb-0">Weekly Attendance Overview</h4>
+                        <p class="text-secondary small">Attendance Pattern for the current week</p>
+                        
+                        <div class="mt-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="fw-bold me-3" style="width: 40px;">Mon</span>
+                                <div class="progress-custom">
+                                    <div class="progress-val-green">40</div>
+                                    <div class="progress-val-red">5</div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="fw-bold me-3" style="width: 40px;">Tue</span>
+                                <div class="progress-custom"></div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="fw-bold me-3" style="width: 40px;">Wed</span>
+                                <div class="progress-custom"></div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="fw-bold me-3" style="width: 40px;">Thu</span>
+                                <div class="progress-custom"></div>
+                            </div>
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="fw-bold me-3" style="width: 40px;">Fri</span>
+                                <div class="progress-custom"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
