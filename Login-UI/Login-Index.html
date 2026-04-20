@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <title>Login - Attendance and Performance Monitoring System</title>
+
+    <style>
+        :root {
+            --sidebar-bg: #840CA9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            background-color: #f0f0f0;
+        }
+
+        /* LEFT PANEL */
+        .left-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 475px;
+            margin-bottom: 140px;
+        }
+
+        .login-box h1 {
+            font-size: 40px;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        .welcome-subtitle {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 40px;
+        }
+
+        .login-heading {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            border: 1.5px solid #aaa;
+            border-radius: 6px;
+            padding: 12px 14px;
+            font-size: 0.95rem;
+            background-color: #fff;
+            color: #333;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--sidebar-bg);
+            box-shadow: 0 0 0 3px rgba(132, 12, 169, 0.12);
+            outline: none;
+        }
+
+        .btn-login {
+            background-color: var(--sidebar-bg);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: block;
+            margin: 32px auto 0;
+        }
+
+        .btn-login:hover {
+            background-color: #6a0a89;
+        }
+
+        /* RIGHT PANEL */
+        .right-panel {
+            flex: 1;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .school-logo {
+            width: 500px;
+            height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .logo-placeholder {
+            width: 300px;
+            height: 300px;
+            background-color: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left Panel -->
+    <div class="left-panel">
+        <div class="login-box">
+            <h1 class="welcome-title">Make the monitoring easier and more reliable.</h1>
+            <p class="welcome-subtitle">Attendance and Performance Monitoring System</p>
+
+            <h2 class="login-heading">Login</h2>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="">
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="">
+            </div>
+
+            <button class="btn-login" onclick="window.location.href='/Immersion-Teacher-UI/Home-Dashboard.html'">LOGIN</button>
+        </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+        <img src="/Pictures/OIS Logo.png" alt="Oboob Integrated School Logo" class="school-logo"
+             onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';">
+        <div class="logo-placeholder" id="logo-fallback" style="display:none;">
+            <span>OIS Logo<br><small>(Place OIS Logo.png in /Pictures/)</small></span>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

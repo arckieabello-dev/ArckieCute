@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <title>Dashboard</title>
+
+        <style>
+        /* COLOR VARIABLES */
+        :root {
+            --sidebar-bg: #840CA9;
+            --sidebar-active: #BF66DB;
+            --color-total: #2C5282;
+            --color-present: #38b25d; /* Updated Green */
+            --color-absent: #E53E3E;
+            --color-late: #ECC94B;
+            --bg-light: #f8f9fa;
+            --search-bg: #efefef;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            background-color: var(--bg-light);
+            overflow-x: hidden;
+        }
+
+        a h6 {
+            color: white !important;
+        }
+
+        .top-logo img {
+            width: 80px;
+            height: auto;
+            margin: 10px 0;
+        }
+
+        /* SIDEBAR STYLES */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            position: sticky;
+            top: 0;
+            color: white;
+            z-index: 1000;
+        }
+
+        .sidebar hr {
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            opacity: 1;
+        }
+
+        .empty-kwan{ margin-top: 60px; }
+
+        .nav-pills .nav-link {
+            color: white;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: var(--sidebar-active);
+        }
+
+        .nav-pills .nav-link:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .logout-link {
+            font-weight: 600;
+            font-size: 1.3rem !important;
+            transition: 0.3s;
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* TOP NAV BAR STYLES */
+        .top-nav {
+            height: 80px;
+            background-color: white;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .search-box {
+            background-color: var(--search-bg);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            width: 400px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            margin-left: 10px;
+            width: 100%;
+            color: #6c757d;
+        }
+
+        .profile-border {
+            border: 3px solid var(--sidebar-bg);
+            padding: 2px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .profile-img-top {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-area { padding: 30px; }
+
+        /* LOGOUT MODAL OVERLAY */
+        .logout-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.45);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-modal-overlay.show {
+            display: flex;
+        }
+
+        .logout-modal-box {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px 28px 24px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        }
+
+        .logout-modal-box h6 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 24px;
+        }
+
+        .logout-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-logout-confirm {
+            width: 120px;
+            background-color: var(--sidebar-bg);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 9px 28px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-logout-confirm:hover {
+            background-color: #6a0a89;
+        }
+
+        .btn-logout-back {
+            width: 120px;
+            background-color: #e9ecef;
+            color: #495057;
+            border: none;
+            border-radius: 8px;
+            padding: 9px 28px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-logout-back:hover {
+            background-color: #dee2e6;
+        }
+
+    </style>
+    
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="d-flex flex-column flex-shrink-0 p-3 sidebar">
+        <a href="Immersion-Teacher-Dashboard.html" class="top-logo d-flex align-items-center text-decoration-none" style="gap: 5px;">
+            <img src="/Pictures/OIS Logo.png" alt="OIS Logo" class="me-2">
+            <h6 class="mb-0">Attendance and Performance Monitoring System</h6>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item"><a href="Immersion-Teacher-Dashboard.html" class="nav-link"><i class="bi bi-house me-3"></i> Dashboard</a></li>
+            <li class="nav-item"><a href="Immersion-Teacher-Student-Masterlist.html" class="nav-link"><i class="bi bi-person-lines-fill me-3"></i> Student Masterlist</a></li>
+            <li class="nav-item"><a href="Immersion-Teacher-Industry-Partners.html" class="nav-link"><i class="bi bi-buildings me-3"></i> Industry Partners</a></li>
+            <li class="nav-item"><a href="Immersion-Teacher-Report-Generation.html" class="nav-link active"><i class="bi bi-file-earmark-bar-graph me-3"></i> Report Generation</a></li>
+            <li class="nav-item"><a href="Immersion-Teacher-Profile.html" class="nav-link"><i class="bi bi-person-circle me-3"></i> Profile</a></li>
+        </ul>
+        <hr>
+        
+        <div class="pb-3 d-flex justify-content-center">
+            <a id="logoutBtn" class="d-flex align-items-center logout-link">
+                <i class="bi bi-box-arrow-left me-2"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Section -->
+    <div class="main-container">
+        
+        <nav class="top-nav">
+            <div class="search-box">
+                <i class="bi bi-search text-secondary"></i>
+                <input type="text" placeholder="Search....">
+            </div>
+
+            <div class="d-flex align-items-center">
+                <span class="fw-bold me-4 text-dark">Monday, March 32, 2062</span>
+                <a href="Home-Profile.html">
+                    <div class="profile-border">
+                        <img src="/Pictures/images.jpg" alt="profile" class="profile-img-top">
+                    </div>
+                </a>
+            </div>
+        </nav>
+
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="logout-modal-overlay" id="logoutModal">
+        <div class="logout-modal-box">
+            <h6>Do you want to Log Out?</h6>
+            <div class="logout-modal-actions">
+                <button class="btn-logout-confirm" id="confirmLogout">Confirm</button>
+                <button class="btn-logout-back" id="cancelLogout">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const logoutBtn = document.getElementById('logoutBtn');
+        const logoutModal = document.getElementById('logoutModal');
+        const confirmLogout = document.getElementById('confirmLogout');
+        const cancelLogout = document.getElementById('cancelLogout');
+
+        // Open modal when logout is clicked
+        logoutBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            logoutModal.classList.add('show');
+        });
+
+        // Confirm: redirect to login page (update href as needed)
+        confirmLogout.addEventListener('click', function () {
+            window.location.href = '/Login-UI/Login-Index.html';
+        });
+
+        // Back: close modal
+        cancelLogout.addEventListener('click', function () {
+            logoutModal.classList.remove('show');
+        });
+
+        // Close modal when clicking outside the box
+        logoutModal.addEventListener('click', function (e) {
+            if (e.target === logoutModal) {
+                logoutModal.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

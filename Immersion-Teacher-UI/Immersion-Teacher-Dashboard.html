@@ -11,13 +11,13 @@
 
     <title>Dashboard</title>
 
-    <style>
+        <style>
         /* COLOR VARIABLES */
         :root {
             --sidebar-bg: #840CA9;
             --sidebar-active: #BF66DB;
             --color-total: #2C5282;
-            --color-present: #38b25d;
+            --color-present: #38b25d; /* Updated Green */
             --color-absent: #E53E3E;
             --color-late: #ECC94B;
             --bg-light: #f8f9fa;
@@ -29,6 +29,16 @@
             display: flex;
             background-color: var(--bg-light);
             overflow-x: hidden;
+        }
+
+        a h6 {
+            color: white !important;
+        }
+
+        .top-logo img {
+            width: 80px;
+            height: auto;
+            margin: 10px 0;
         }
 
         /* SIDEBAR STYLES */
@@ -47,7 +57,7 @@
             opacity: 1;
         }
 
-        .empty-kwan { margin-top: 60px; }
+        .empty-kwan{ margin-top: 60px; }
 
         .nav-pills .nav-link {
             color: white;
@@ -72,6 +82,7 @@
             transition: 0.3s;
             text-decoration: none;
             color: white;
+            cursor: pointer;
         }
 
         /* TOP NAV BAR STYLES */
@@ -125,72 +136,49 @@
 
         .content-area { padding: 30px; }
 
-        /* SUMMARY CARDS */
-        .summary-card {
-            border-radius: 12px;
-            background-color: #fff;
-            padding: 20px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            border: 2px solid transparent;
+        /* --- DASHBOARD CONTENT STYLES --- */
+        .stat-card {
+            border-radius: 15px;
+            border-style: solid;
+            border-width: 2px; /* Explicit border width */
+            background: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
         }
 
-        .summary-card .card-label {
-            font-size: 0.9rem;
-            color: #6c757d;
-            font-weight: 500;
+        /* Stat Card Colors using Root Variables */
+        .border-total { border-color: var(--color-total) !important; color: var(--color-total); }
+        .border-present { border-color: var(--color-present) !important; color: var(--color-present); }
+        .border-absent { border-color: var(--color-absent) !important; color: var(--color-absent); }
+        .border-late { border-color: var(--color-late) !important; color: var(--color-late); }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            padding: 25px;
+            height: 100%;
         }
 
-        .summary-card .card-value {
-            font-size: 2.4rem;
-            font-weight: 700;
-            line-height: 1;
+        .activity-item { display: flex; margin-bottom: 20px; }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-top: 6px;
+            margin-right: 15px;
+            flex-shrink: 0;
         }
 
-        .summary-card.present {
-            border-color: var(--color-present);
-        }
-
-        .summary-card.present .card-value {
-            color: var(--color-present);
-        }
-
-        .summary-card.late {
-            border-color: var(--color-late);
-        }
-
-        .summary-card.late .card-value {
-            color: var(--color-late);
-        }
-
-        .summary-card.absent {
-            border-color: var(--color-absent);
-        }
-
-        .summary-card.absent .card-value {
-            color: var(--color-absent);
-        }
-
-        /* EXPORT BUTTON */
-        .btn-export {
-            background-color: var(--sidebar-bg);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-            transition: background-color 0.2s;
-        }
-
-        .btn-export:hover {
-            background-color: var(--sidebar-active);
-            color: white;
+        .title-header{
+            margin-top: 30px;
         }
 
         /* ATTENDANCE TABLE */
@@ -198,6 +186,7 @@
             background-color: #fff;
             border-radius: 12px;
             padding: 10px 0;
+            margin-top: 30px;
             box-shadow: 0 1px 6px rgba(0,0,0,0.06);
         }
 
@@ -272,27 +261,101 @@
             background-color: rgba(229, 62, 62, 0.1);
             border-color: var(--color-absent);
         }
-    </style>
 
+        /* LOGOUT MODAL OVERLAY */
+        .logout-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.45);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-modal-overlay.show {
+            display: flex;
+        }
+
+        .logout-modal-box {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px 28px 24px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        }
+
+        .logout-modal-box h6 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 24px;
+        }
+
+        .logout-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-logout-confirm {
+            width: 120px;
+            background-color: var(--sidebar-bg);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 9px 28px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-logout-confirm:hover {
+            background-color: #6a0a89;
+        }
+
+        .btn-logout-back {
+            width: 120px;
+            background-color: #e9ecef;
+            color: #495057;
+            border: none;
+            border-radius: 8px;
+            padding: 9px 28px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-logout-back:hover {
+            background-color: #dee2e6;
+        }
+
+    </style>
+    
 </head>
 <body>
 
     <!-- Sidebar -->
     <div class="d-flex flex-column flex-shrink-0 p-3 sidebar">
-        <div class="empty-kwan"></div>
+        <a href="Immersion-Teacher-Dashboard.html" class="top-logo d-flex align-items-center text-decoration-none" style="gap: 5px;">
+            <img src="/Pictures/OIS Logo.png" alt="OIS Logo" class="me-2">
+            <h6 class="mb-0">Attendance and Performance Monitoring System</h6>
+        </a>
         <hr>
         <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item"><a href="Home-Dashboard.html" class="nav-link"><i class="bi bi-house me-3"></i> Dashboard</a></li>
-            <li class="nav-item"><a href="Home-Attendance-Log.html" class="nav-link active"><i class="bi bi-calendar2-check me-3"></i> Attendance Log</a></li>
-            <li class="nav-item"><a href="Home-Student-Masterlist.html" class="nav-link"><i class="bi bi-person-lines-fill me-3"></i> Student Masterlist</a></li>
-            <li class="nav-item"><a href="Home-Industry-Partners.html" class="nav-link"><i class="bi bi-buildings me-3"></i> Industry Partners</a></li>
-            <li class="nav-item"><a href="Home-Report-Generation.html" class="nav-link"><i class="bi bi-file-earmark-bar-graph me-3"></i> Report Generation</a></li>
-            <li class="nav-item"><a href="Home-Profile.html" class="nav-link"><i class="bi bi-person-circle me-3"></i> Profile</a></li>
+            <li class="nav-item"><a href="Immersion-Teacher-Dashboard.html" class="nav-link active"><i class="bi bi-house me-3"></i> Dashboard</a></li>
+            <li class="nav-item"><a href="Immersion-Teacher-Student-Masterlist.html" class="nav-link"><i class="bi bi-person-lines-fill me-3"></i> Student Masterlist</a></li>
+            <li class="nav-item"><a href="Immersion-Teacher-Industry-Partners.html" class="nav-link"><i class="bi bi-buildings me-3"></i> Industry Partners</a></li>
+            <li class="nav-item"><a href="Immersion-Teacher-Report-Generation.html" class="nav-link"><i class="bi bi-file-earmark-bar-graph me-3"></i> Report Generation</a></li>
+            <li class="nav-item"><a href="Immersion-Teacher-Profile.html" class="nav-link"><i class="bi bi-person-circle me-3"></i> Profile</a></li>
         </ul>
         <hr>
-
+        
         <div class="pb-3 d-flex justify-content-center">
-            <a href="#" class="d-flex align-items-center logout-link">
+            <a id="logoutBtn" class="d-flex align-items-center logout-link">
                 <i class="bi bi-box-arrow-left me-2"></i>
                 <span>Logout</span>
             </a>
@@ -301,7 +364,7 @@
 
     <!-- Main Section -->
     <div class="main-container">
-
+        
         <nav class="top-nav">
             <div class="search-box">
                 <i class="bi bi-search text-secondary"></i>
@@ -310,47 +373,52 @@
 
             <div class="d-flex align-items-center">
                 <span class="fw-bold me-4 text-dark">Monday, March 32, 2062</span>
-                <div class="profile-border">
-                    <img src="/Pictures/images.jpg" alt="profile" class="profile-img-top">
-                </div>
+                <a href="Home-Profile.html">
+                    <div class="profile-border">
+                        <img src="/Pictures/images.jpg" alt="profile" class="profile-img-top">
+                    </div>
+                </a>
             </div>
         </nav>
 
+        <!-- Content Area -->
         <div class="content-area">
+            <h1>Hello John Arckie!</h1>
+            <p class="text-secondary">Immersion Teacher</p>
 
-            <!-- Page Header Row -->
-            <div class="d-flex justify-content-between align-items-start mb-4">
-                <div>
-                    <h1 class="mb-1">Attendance Logs</h1>
-                    <p class="text-secondary mb-0">Detailed attendance records and monitoring</p>
-                </div>
-                <button class="btn-export">
-                    <i class="bi bi-download"></i> Export Logs
-                </button>
-            </div>
-
-            <!-- Summary Cards -->
-            <div class="row g-3 mb-4">
-                <div class="col-md-4">
-                    <div class="summary-card present">
-                        <span class="card-label">Present Today</span>
-                        <span class="card-value">40</span>
+            <!-- Row 1: Summary Cards -->
+            <div class="row g-4 mt-2">
+                <div class="col-md-3">
+                    <div class="stat-card border-total">
+                        <h5 class="text-dark fw-bold">Total Students</h5>
+                        <div class="stat-number">45</div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="summary-card late">
-                        <span class="card-label">Late Arrivals</span>
-                        <span class="card-value">7</span>
+                <div class="col-md-3">
+                    <div class="stat-card border-present">
+                        <h5 class="text-dark fw-bold">Present Today</h5>
+                        <div class="stat-number">40</div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="summary-card absent">
-                        <span class="card-label">Absent</span>
-                        <span class="card-value">5</span>
+                <div class="col-md-3">
+                    <div class="stat-card border-absent">
+                        <h5 class="text-dark fw-bold">Absent Today</h5>
+                        <div class="stat-number">5</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card border-late">
+                        <h5 class="text-dark fw-bold">Late Today</h5>
+                        <div class="stat-number">14</div>
                     </div>
                 </div>
             </div>
 
+            <div class="title-header">
+                <h1>Attendance Logs</h1>
+                <p class="text-secondary">Detailed attendance records and monitoring</p>
+            </div>
+            
             <!-- Attendance Table -->
             <div class="attendance-table-wrapper">
                 <table class="table attendance-table">
@@ -383,8 +451,7 @@
                             <td>Kim Jong un</td>
                             <td>ELCER Digital</td>
                             <td><span class="time-cell"><i class="bi bi-clock time-in-icon"></i> 8:00 AM</span></td>
-                            <td><span class="time-cell"><i class="bi bi-clock time-out-icon"></i> 5:00 PM</span></td>
-                            <td>9H</td>
+                            <td><span class="time-cell"><i class="bi bi-clock time-out-icon"></i> 5:00 PM</span></td>                            <td>9H</td>
                             <td><span class="badge-status badge-present">Present</span></td>
                         </tr>
                         <tr>
@@ -430,11 +497,51 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
 
+    <!-- Logout Confirmation Modal -->
+    <div class="logout-modal-overlay" id="logoutModal">
+        <div class="logout-modal-box">
+            <h6>Do you want to Log Out?</h6>
+            <div class="logout-modal-actions">
+                <button class="btn-logout-confirm" id="confirmLogout">Confirm</button>
+                <button class="btn-logout-back" id="cancelLogout">Back</button>
+            </div>
         </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const logoutBtn = document.getElementById('logoutBtn');
+        const logoutModal = document.getElementById('logoutModal');
+        const confirmLogout = document.getElementById('confirmLogout');
+        const cancelLogout = document.getElementById('cancelLogout');
+
+        // Open modal when logout is clicked
+        logoutBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            logoutModal.classList.add('show');
+        });
+
+        // Confirm: redirect to login page (update href as needed)
+        confirmLogout.addEventListener('click', function () {
+            window.location.href = '/Login-UI/Login-Index.html';
+        });
+
+        // Back: close modal
+        cancelLogout.addEventListener('click', function () {
+            logoutModal.classList.remove('show');
+        });
+
+        // Close modal when clicking outside the box
+        logoutModal.addEventListener('click', function (e) {
+            if (e.target === logoutModal) {
+                logoutModal.classList.remove('show');
+            }
+        });
+    </script>
 </body>
 </html>
